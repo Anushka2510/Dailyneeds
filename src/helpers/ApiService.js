@@ -16,4 +16,11 @@ export default {
     get: async (path) => {
        return promiseWithErrorHandling(axios.get(`${urls.service}/${path}`));
     },
+    post: async (path, payload) => {
+        return promiseWithErrorHandling(axios.post(`${urls.service}/${path}`, payload));
+    },
+    delete: async(path,payload)=>{
+        return axios.delete(`${urls.service}/${path}`,payload);
+    }
+
 };

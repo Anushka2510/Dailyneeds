@@ -11,3 +11,5 @@ fileignoreconfig:
   checksum: 56172829d99722c1f501b96da0283e447637498f6f9476a13bdb479279c7295f
 - filename: src/components/menulist/Menulist.js
   checksum: 4e0f35a8c0d7f7999494961a17fb17baacd2a804d8c716f45583405363706e56
+- filename: src/config/env-config.js
+  checksum: 66c42dd8141d287840f1879926dae87fdd172c8917a1297a741bf88c11c8f6a5
