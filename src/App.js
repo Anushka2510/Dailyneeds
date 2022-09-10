@@ -5,15 +5,23 @@ import Version from './components/version/Version';
 import Menulist from './components/menulist/Menulist';
 import {BrowserRouter as Router, Route, Routes, Switch} from "react-router-dom";
 import Cart from './components/cart/Cart';
+import Icons from './icons/Icons';
+
+
 
 
 class App extends Component {
-  render(){
   
+  render(){
+    
+    
   return (
+    
     <Router>
     <div className="App">
       <Header/>
+      <Icons/>
+      
       <Switch>
         <Route path= "/menulist" component= {Menulist}/>
         <Route path="/cart" component={Cart}/>
@@ -22,7 +30,9 @@ class App extends Component {
       
      
     </div>
+    
     </Router>
+    
   )
   }
 }
