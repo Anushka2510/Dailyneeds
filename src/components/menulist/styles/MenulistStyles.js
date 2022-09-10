@@ -6,7 +6,6 @@ menu: {
   display: 'flex',
   justifyContent: 'center',
   alignitems: 'center',
-  
 
 
 },
@@ -14,16 +13,17 @@ table:{
   border: '2px solid forestgreen',
   width: '800px',
   height: '200px',
-  
+   
   
 },
 headd:{
     borderBottom:'2px solid black',
-
+    
 },
 data:{
     textAlign: 'center', 
     padding: "100",
+   
 }
 
 

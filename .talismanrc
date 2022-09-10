@@ -9,7 +9,12 @@ fileignoreconfig:
   checksum: 56172829d99722c1f501b96da0283e447637498f6f9476a13bdb479279c7295f
 - filename: package-lock.json
   checksum: 56172829d99722c1f501b96da0283e447637498f6f9476a13bdb479279c7295f
-- filename: src/components/menulist/Menulist.js
-  checksum: 4e0f35a8c0d7f7999494961a17fb17baacd2a804d8c716f45583405363706e56
+
 - filename: src/config/env-config.js
   checksum: 66c42dd8141d287840f1879926dae87fdd172c8917a1297a741bf88c11c8f6a5
+- filename: yarn.lock
+  checksum: 8dfc716d089440b0f652e81d7f152f9104ff254bf53c5a7afe0b1fe019e706b2
+- filename: src/components/cart/Cart.js
+  checksum: b38d82717d959062e481a983b97cf5f7de0b49234b56d8be3dc743f360fb3625
+- filename: src/components/menulist/Menulist.js
+  checksum: 7c51cf94778773408238e0b339ce16ae07c9175f3c6587fd86a4e54f37b7d572
