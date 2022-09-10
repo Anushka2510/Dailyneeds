@@ -7,6 +7,9 @@ import Menulist from "../menulist/Menulist";
 import MenuItem from "@material-ui/core/MenuItem";
 import CartService from "./service/CartService";
 import Axios from "axios";
+import {Dialog, DialogContent, Typography } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert/Alert";
+import { jsPDF } from "jspdf";
 
 
 
@@ -16,7 +19,11 @@ const Cart = () => {
     const classes = styles();
     const [menulist, setMenulist] = useState([]);
     const [success, setSuccess] = useState(null);
-    const[bill,setbill]=useState([]);
+    const[bill,setbill]=useState();
+    const [total, setTotal] = useState(Number);
+    var extra;
+    
+  
     
     
 
@@ -46,7 +53,11 @@ const Cart = () => {
             if(response.data){
             setCart([...myCart,response.data]);
     
-            console.log({myCart});
+            // console.log(response.data.price);
+            // setbill(response.data.price);
+            
+           setTotal(response.data.price+total);
+           total=total+response.data.price;
 
          
             }     
@@ -54,6 +65,21 @@ const Cart = () => {
         }
         catch (e) { }
     }
+    const fetchRemoveItems= async () => {
+        try {
+            const response = await CartService.getCartdata();
+
+           setTotal(total-response.data.price);
+           total=total-response.data.price;
+
+         
+                
+            
+        }
+        catch (e) { }
+    }
+
+    
 
     
 
@@ -94,9 +120,10 @@ const Cart = () => {
 
     const handleRemove = async (id) => {  
         
-      
+           fetchRemoveItems();
            const response= await Axios.delete('http://localhost:8080/CartItems/'+id);
            setCart(myCart.filter(item => item.id !== id));
+          
            
     };
     const[item,setitem]=useState("");
@@ -116,6 +143,7 @@ const Cart = () => {
     }
 
     const handleBill = async (event) => {
+
         event.preventDefault();
         const payload = {
             item: item,
@@ -133,6 +161,59 @@ const Cart = () => {
             setSuccess(false);
 
         }
+
+        const doc = new jsPDF();
+     
+        doc.setFontSize(22);
+        doc.setTextColor(0, 0, 255);
+        doc.text("dailyneed", 80, 20);
+
+       
+        doc.setFontSize(14);
+        doc.setTextColor(0, 0, 0);
+       
+       var i=0;
+        myCart.forEach(myCarts => {
+            const myCartData = [
+               
+              myCarts.item,
+              myCarts.quantity,
+              myCarts.unit,
+              myCarts.price,
+            ]
+            i+=10;
+
+            doc.text("Item name", 40, 40+i);
+            doc.text("Quantity", 40, 50+i);
+            doc.text("unit", 40, 60+i);
+            doc.text("cost", 40, 70+i);
+            doc.text(": " + myCartData[0],110,40+i);
+            doc.text(": " + myCartData[1],110,50+i);
+            doc.text(": " + myCartData[2],110,60+i);
+            doc.text(": " + myCartData[3],110,70+i);
+            extra=i;
+            i=i+40;
+            if(i>200){
+                doc.addPage();
+            }
+            
+
+          })
+        if(i>200){
+            doc.text("Total: " +total,128,40); 
+            doc.setFontSize(18);
+        doc.setTextColor(0, 128, 0);
+        doc.text("Bill Generated", 80, 60);
+        }
+        else{
+          doc.text("Total: " +total,128,90+extra);
+
+        doc.setFontSize(18);
+        doc.setTextColor(0, 128, 0);
+        doc.text("Bill Generated", 80, 120+extra);
+        }
+
+        doc.save("DailyNeedsBll.pdf");
             
     };
     
@@ -144,7 +225,7 @@ const Cart = () => {
 
 
     return (
-        <div>
+        <div className={classes.forms}>
             <form onSubmit={handleSubmit}>
 
                 <FormControl fullWidth >
@@ -193,22 +274,33 @@ const Cart = () => {
                         Add to cart
                     </Button>
                 </FormControl>
+                <Button className={classes.buttons} type="button" onClick={handleBill} variant="contained" color="secondary">
+                    generate bill
+                </Button>
+                <div><h3>total: {total}</h3></div>
+                
+               
+                
                 
                
 
             </form>
                  
+             <div>
              
-            <div>
+             
+             
+            <div className={classes.showDataStyle}>
                                 <th className={classes.data}>Item Name</th>
                                 <th className={classes.data}>quantity</th>
                                 <th className={classes.data}>unit</th>
                                 <th className={classes.data}>cost</th>
+               
                    {
                     myCart.map(curElem => {
                         const {id,item,price, quantity, unit} = curElem;
                         return ( 
-                            <div className={classes.showDataStyle} key={id} >
+                            <div  key={id} >
                                
                                 <td className={classes.data}>{item}</td>
                                 <td className={classes.data}>{quantity}</td>
@@ -222,6 +314,7 @@ const Cart = () => {
                                 
                                     }} variant="contained" color="secondary">
                                     Remove
+                                    
                                 </Button></td>
                                 
                             </div>
@@ -233,13 +326,10 @@ const Cart = () => {
                     })
 
                 }
-               
-               <br></br>
-                <Button type="button" onClick={handleBill} variant="contained" color="secondary">
-                    generate bill
-                </Button>
+                </div>
                 
-
+            
+           
             </div>
             
 
